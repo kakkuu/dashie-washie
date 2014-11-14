@@ -3,7 +3,8 @@
 #include <SFML/Graphics.hpp>
 using namespace std;
 
-const float shakiness = 2;
+const float shakiness = 20;
+const bool stayinplace = false;
 
 class Object : public sf::Drawable {
     virtual void update(float delta) = 0;
@@ -39,7 +40,7 @@ public:
         this->dashie.setOrigin(sf::Vector2f(100,100));
         this->dashie.setScale(sf::Vector2f(0.85, 0.85));
 
-        rotatespeed = 0.1;
+        rotatespeed = 1;
     }
 
     float getSpeed() const { return rotatespeed; }
@@ -64,6 +65,7 @@ int main(int argc, char **args)
     DashWash dw("dashie.png", "washie.png");
 
     minstd_rand0 rnd(111);
+    sf::Vector2i winpos = window.getPosition();
 
     sf::Clock clock;
     while (window.isOpen())
@@ -80,13 +82,15 @@ int main(int argc, char **args)
 
         // update everything
         dw.update(delta);
+
         int shake = shakiness * dw.getSpeed();
-
-
-        window.setPosition(window.getPosition() + sf::Vector2i(
-                                        rnd()%max(shake*2,1)-shake,
-                                        rnd()%max(shake*2,1)-shake
-                                        ));
+        sf::Vector2i refpos;
+        refpos = ((stayinplace)?(winpos):(window.getPosition()) );
+        window.setPosition(refpos + sf::Vector2i(
+                rnd()%max(shake*2,1)-shake,
+                rnd()%max(shake*2,1)-shake
+            )
+        );
 
 
         // actual drawing
