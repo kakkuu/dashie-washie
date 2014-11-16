@@ -3,8 +3,8 @@
 #include <SFML/Graphics.hpp>
 using namespace std;
 
-const float shakiness = 20;
-const bool stayinplace = false;
+const float shakiness = 1.5;
+const bool stayinplace = true;
 
 class Object : public sf::Drawable {
     virtual void update(float delta) = 0;
@@ -40,7 +40,7 @@ public:
         this->dashie.setOrigin(sf::Vector2f(100,100));
         this->dashie.setScale(sf::Vector2f(0.85, 0.85));
 
-        rotatespeed = 1;
+        rotatespeed = 2;
     }
 
     float getSpeed() const { return rotatespeed; }
